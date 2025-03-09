@@ -1,29 +1,39 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  AfterViewInit,
+  ElementRef,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+
+import { InitWorker } from './offscreenCanvas/init-worker.worker';
 
 @Component({
   selector: 'app-root',
-  template: `<h1>Angular Web Worker</h1>
-    <button (click)="sendMessage()">Send Message</button>
-    <p>{{ message }}</p>`,
-})
-export class AppComponent implements OnInit {
-  private worker: Worker | undefined;
-  message = 'No message yet';
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss'],
 
-  ngOnInit() {
-    if (typeof Worker !== 'undefined') {
-      this.worker = new Worker(new URL('./worker.worker', import.meta.url));
-      this.worker.onmessage = ({ data }) => {
-        this.message = data;
-      };
-    } else {
-      console.warn('Web Workers are not supported in this environment.');
-    }
+  // template: `<h1>Angular Web Worker</h1>
+  // <button (click)="sendMessage()">Send Message</button>
+  // <p>{{ message }}</p>`,
+})
+export class AppComponent implements AfterViewInit, OnInit {
+  title = 'renderWorker';
+  private initWorker: InitWorker | undefined;
+  message = 'No message yet';
+  @ViewChild('txt') paragraphRef!: ElementRef<HTMLParagraphElement>;
+
+  ngAfterViewInit() {
+    const elem = this.paragraphRef.nativeElement;
+
+    this.initWorker = new InitWorker({ message: this.message, elem });
   }
 
+  ngOnInit() {}
+
   sendMessage() {
-    if (this.worker) {
-      this.worker.postMessage('Hello from AppComponent');
+    if (this.initWorker) {
+      this.initWorker.sendMessage();
     }
   }
 }
