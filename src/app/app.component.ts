@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { InitWorker } from './offscreenCanvas/init-worker.worker';
+import { InitWorker } from './offscreenCanvas/init-worker';
 
 @Component({
   selector: 'app-root',
