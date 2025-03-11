@@ -1,0 +1,26 @@
+#canvasContainer {
+  display: flex;
+  position: fixed;
+  top: 200px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#scene1 {
+  width: 50%;
+  height: 100%;
+  border: 1px solid #ccc;
+  touch-action: none;
+}
+#scene2 {
+  width: 50%;
+  height: 100%;
+  border: 1px solid #ccc;
+  touch-action: none;
+}
+
+#txt {
+  margin: 0;
+  color: #ff0000;
+}

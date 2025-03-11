@@ -6,7 +6,8 @@ import {
   ViewChild,
 } from '@angular/core';
 
-import { InitWorker } from './offscreenCanvas/init-worker';
+import { InitScene } from './offscreenCanvas/init-scene.service';
+import { InitWorker } from './offscreenCanvas/init-worker.service';
 
 @Component({
   selector: 'app-root',
@@ -20,20 +21,22 @@ import { InitWorker } from './offscreenCanvas/init-worker';
 export class AppComponent implements AfterViewInit, OnInit {
   title = 'renderWorker';
   private initWorker: InitWorker | undefined;
-  message = 'No message yet';
-  @ViewChild('txt') paragraphRef!: ElementRef<HTMLParagraphElement>;
+  @ViewChild('scene_1', { static: true })
+  canvas1!: ElementRef;
+  @ViewChild('scene_2', { static: true })
+  canvas2!: ElementRef;
 
   ngAfterViewInit() {
-    const elem = this.paragraphRef.nativeElement;
+    if (this.canvas2) {
+      const initWorker = new InitWorker();
+      initWorker.init({ canvas: this.canvas2.nativeElement });
+    }
 
-    this.initWorker = new InitWorker({ message: this.message, elem });
+    const initScene = new InitScene();
+    if (this.canvas1) {
+      initScene.initCanvas1({ canvas: this.canvas1.nativeElement });
+    }
   }
 
   ngOnInit() {}
-
-  sendMessage() {
-    if (this.initWorker) {
-      this.initWorker.sendMessage();
-    }
-  }
 }
